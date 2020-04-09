@@ -256,3 +256,38 @@ function heapify(array, size, rootIdx, animations){
     animations.push([largest, array[largest]]);
   }
 }
+
+// Selection Sort ===============================
+export function getSelectionSortAnimation(array){
+  const animations = [];
+  selectionSortHelper(array, animations);
+  return animations;
+}
+
+function selectionSortHelper(array, animations){
+  for(let i = 0; i < array.length; i++){
+    let jMin = i;
+    
+    for(let j = i + 1; j < array.length; j++){
+      animations.push([j, jMin]);
+      animations.push([j, jMin]);
+      animations.push([-1, -1]);
+      animations.push([-1, -1]);
+
+      if(array[j] < array[jMin]){
+        jMin = j;
+      }
+    }
+
+    if(jMin != i) {
+      animations.push([-1, -1]);
+      animations.push([-1, -1]);
+      animations.push([jMin, array[i]]);
+      animations.push([i, array[jMin]]);
+
+      let temp = array[i];
+      array[i] = array[jMin];
+      array[jMin] = temp;
+    }
+  }
+}
