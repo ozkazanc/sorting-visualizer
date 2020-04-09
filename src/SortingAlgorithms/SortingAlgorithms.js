@@ -1,8 +1,6 @@
 import {randomIntFromIntervals} from '../SortingVisualizer/SortingVisualizer.jsx'
 // Merge Sort ======================================================
 export function getMergeSortAnimation(array) {
-    if(array.lenght <= 1) return array;
-    
     const animations = [];
     const auxArray = array.slice();
 
@@ -60,8 +58,6 @@ function doMerge(array, left, middle, right, auxArray, animations){
 
 // Bubble Sort ========================================================
 export function getBubbleSortAnimation(array){
-  if(array.length <= 1) return array;
-
   const animations = [];
   bubbleSortHelper(array, animations);
   return animations;
@@ -96,8 +92,6 @@ function bubbleSortHelper(array, animations) {
 
 // Quick Sort =================================
 export function getQuickSortAnimation(array){
-  if(array.length <= 1) return array;
-
   const animations = [];
   quickSortHelper(array, 0, array.length - 1, animations);
   return animations;
@@ -169,7 +163,7 @@ function swap(a, b) {
 function arraysEqual(a, b) {
   if (a === b) return true;
   if (a == null || b == null) return false;
-  if (a.length != b.length) return false;
+  if (a.length !== b.length) return false;
 
   // If you don't care about the order of the elements inside
   // the array, you should sort both arrays here.
@@ -183,3 +177,82 @@ function arraysEqual(a, b) {
 }
 
 // Heap Sort =================================
+export function getHeapSortAnimation(array){
+  const animations = [];
+  heapSortHelper(array, animations);
+  return animations;
+}
+
+function heapSortHelper(array, animations){
+  
+  // Build max heap
+  for(let i = Math.floor(array.length / 2) - 1; i >= 0; i--){
+    heapify(array, array.length, i, animations);
+  }
+
+  // One by one extract an element from heap
+  for (let i = array.length - 1; i >= 0; i--){
+
+    animations.push([-1, -1]);
+    animations.push([-1, -1]);
+    animations.push([-1, -1]);
+    animations.push([-1, -1]);
+    animations.push([i, array[0]]);
+    animations.push([0, array[i]]);
+    
+    // Move current root to end;
+    let temp = array[i];
+    array[i] = array[0];
+    array[0] = temp;
+
+    // Create the max heap on the reduced array
+    heapify(array, i, 0, animations);
+  }
+}
+
+// To heapify a subtree rooted with node rootIdx which is 
+// an index in array. size is size of heap 
+function heapify(array, size, rootIdx, animations){
+  // Initialize largest as root
+  let largest = rootIdx;
+  let left = rootIdx * 2 + 1;
+  let right = rootIdx * 2 + 2;
+
+  if(left < size && array[left] > array[largest]){
+    animations.push([left, largest]);
+    animations.push([left, largest]);
+    
+    largest = left;
+  }
+  else {
+    animations.push([-1, -1]);
+    animations.push([-1, -1]);
+  }
+
+  if(right < size && array[right] > array[largest]){
+    animations.push([right, largest]);
+    animations.push([right, largest]);
+    
+    largest = right;
+  }
+  else {
+    animations.push([-1, -1]);
+    animations.push([-1, -1]);
+  }
+
+  if(largest != rootIdx) {
+    animations.push([rootIdx, array[largest]]);
+    animations.push([largest, array[rootIdx]]);
+    
+    // Swap root and largest
+    let temp = array[rootIdx];
+    array[rootIdx] = array[largest];
+    array[largest] = temp;
+
+    heapify(array, size, largest, animations);
+  }
+  else{
+    animations.push([rootIdx, array[rootIdx]]);
+    animations.push([largest, array[largest]]);
+  }
+}

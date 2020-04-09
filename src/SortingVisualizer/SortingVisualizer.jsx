@@ -4,16 +4,17 @@ import
 {   
     getMergeSortAnimation,
     getBubbleSortAnimation,
-    getQuickSortAnimation
+    getQuickSortAnimation,
+    getHeapSortAnimation
 } from '../SortingAlgorithms/SortingAlgorithms.js';
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 10;
+const ANIMATION_SPEED_MS = 1;
 
 // Change this value for the number of bars (value) in the array.
 const NUMBER_OF_ARRAY_BARS =//10; /* Testing */ 
-                            290; /* 14 inch 1080p screen */ 
-                            //440; /* 24 inch 1080p screen */
+                            //290; /* 14 inch 1080p screen */ 
+                            440; /* 24 inch 1080p screen */
 
 // This is the main color of the array bars.
 const PRIMARY_COLOR = 'turquoise';
@@ -108,7 +109,35 @@ export default class SortingVisualizer extends React.Component {
         }
     }
 
-    heapSort() {}
+    heapSort() {
+        const animations = getHeapSortAnimation(this.state.array);
+        for(let i = 0; i < animations.length; i++){
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const isColorChange = i % 6 <= 3;
+            if(isColorChange) {
+                const [firstBarIdx, secondBarIdx] = animations[i];
+                if(firstBarIdx < 0 || secondBarIdx < 0) continue;
+
+                const firstBarStyle = arrayBars[firstBarIdx].style;
+                const secondBarStyle = arrayBars[secondBarIdx].style;
+                const color = i % 6 === 0 || i % 6 === 2 ? SECONDARY_COLOR : PRIMARY_COLOR;
+
+                setTimeout(() => {
+                    firstBarStyle.backgroundColor = color;
+                    secondBarStyle.backgroundColor = color;
+                }, i * ANIMATION_SPEED_MS);
+            }
+
+            else {
+                const [firstBarIdx, newHeight] = animations[i];
+                if(firstBarIdx < 0 || newHeight < 0) continue;
+                setTimeout(() => {
+                    const firstBarStyle = arrayBars[firstBarIdx].style;
+                    firstBarStyle.height = `${newHeight}px`;
+                }, i * ANIMATION_SPEED_MS);
+            }
+        }
+    }
 
     bubbleSort() {
         const animations = getBubbleSortAnimation(this.state.array);
