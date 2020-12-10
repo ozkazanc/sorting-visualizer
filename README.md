@@ -1,5 +1,6 @@
 # sorting-visualizer
 A Sorting Visualizer web application done by using JS/React.
+https://ozkazanc.github.io/sorting-visualizer/
 
 In order to see how the different sorting algorithms work and do sorting on different input arrays.
 
